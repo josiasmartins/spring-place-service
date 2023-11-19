@@ -18,6 +18,7 @@ class PlaceServiceApplicationTests { // teste de integração
 	@Test
 	public void testCreatePlaceSuccess() {
 		String name = "Valid Name";
+		String city = "Valid City";
 		String state = "Valid State";
 		String slug = "valid-name";
 		
@@ -25,7 +26,7 @@ class PlaceServiceApplicationTests { // teste de integração
 			.post()
 			.uri("/places")
 			.bodyValue(
-				new PlaceRequest(name, state)
+				new PlaceRequest(name, city, state)
 			)
 			.exchange() // efeatua a chamada para api 
 			.expectBody()
@@ -39,13 +40,14 @@ class PlaceServiceApplicationTests { // teste de integração
 	@Test
 	public void testCreatePlaceFailure() {
 		String name  = "";
+		String city = "Valid City";
 		String state = "";
 
 		webTestClient
 			.post()
 			.uri("/places")
 			.bodyValue(
-				new PlaceRequest(name, state)
+				new PlaceRequest(name, city, state)
 			)
 			.exchange() // efeatua a chamada para api 
 			.expectStatus().isBadRequest();
