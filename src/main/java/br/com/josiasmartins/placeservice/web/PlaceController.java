@@ -3,6 +3,7 @@ package br.com.josiasmartins.placeservice.web;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,11 +39,13 @@ public class PlaceController {
     } 
 
     @PatchMapping("/{id}")
-    public Mono<ResponseEntity<PlaceResponse>> edit(@PathVariable("id") Long id, @RequestBody PlaceRequest request) {
-        return placeService.getById(id)
-            .map(place -> ResponseEntity.ok(PlaceMapper.toResponse(place)))
-            .defaultIfEmpty(ResponseEntity.notFound().build());
-    }
+    public Mono<PlaceResponse> edit(@PathVariable("id") Long id, @RequestBody PlaceRequest request) {
+        // return placeService.getById(id)
+        //     .map(place -> ResponseEntity.ok(PlaceMapper.toResponse(place)))
+        //     .defaultIfEmpty(ResponseEntity.notFound().build());
+
+        return placeService.update(id, request).map(PlaceMapper::toResponse);
+    }   
 
     @GetMapping("/{id}")
     public Mono<ResponseEntity<PlaceResponse>> get(@PathVariable("id") Long id) {
@@ -54,6 +57,12 @@ public class PlaceController {
     @GetMapping
     public Flux<PlaceResponse> list(@RequestParam(required = false) String name) {
         return placeService.list(name).map(PlaceMapper::toResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Place> delete(@PathVariable("id") Long id) {
+        placeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
     
 }

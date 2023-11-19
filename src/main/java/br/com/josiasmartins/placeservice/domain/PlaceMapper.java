@@ -17,6 +17,7 @@ public class PlaceMapper {
 
     public static PlaceResponse toResponse(Place place) {
         return new PlaceResponse(
+            place.id(),
             place.name(),
             place.slug(),
             place.city(), 
