@@ -20,10 +20,10 @@ public class PlaceService {
         var place = new Place(
             null, 
             placeRequest.name(), 
-            slg.slugify(placeRequest.slug()),
+            slg.slugify(placeRequest.name()),
             placeRequest.state(),
-            placeRequest.createdAt(),
-            placeRequest.updatedAt());
+            null,
+            null);
         return placeRepository.save(place);
     }
 
