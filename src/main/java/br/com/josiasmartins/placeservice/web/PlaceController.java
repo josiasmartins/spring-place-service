@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.josiasmartins.placeservice.api.PlaceRequest;
 import br.com.josiasmartins.placeservice.api.PlaceResponse;
@@ -60,9 +61,12 @@ public class PlaceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Place> delete(@PathVariable("id") Long id) {
-        placeService.delete(id);
-        return ResponseEntity.noContent().build();
+    public Mono<Void> delete(@PathVariable("id") Long id) {
+        // placeService.delete(id);
+        // return ResponseEntity.noContent().build();
+        return placeService.delete(id).doOnError((err) ->  new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "estudante não encontrado"));
     }
     
 }

@@ -2,6 +2,8 @@ package br.com.josiasmartins.placeservice.domain;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.github.slugify.Slugify;
 
@@ -46,9 +48,10 @@ public class PlaceService {
         return placeRepository.findAll(query, Sort.by("name").ascending());
     }
     
-    public void delete(Long id) {
+    public Mono<Void> delete(Long id) {
         
-        placeRepository.deleteById(id);
+        return placeRepository.deleteById(id);
+
     }
 
     public Mono<Place> update(Long id, PlaceRequest placeRequest) {
